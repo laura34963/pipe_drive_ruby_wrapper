@@ -24,7 +24,7 @@ module PipeDrive
         pagination(path, params, &block)
       end
 
-      def search(type, opts, strict=false)
+      def search(type, opts)
         raise NotAllowSearchType.new(type) unless const_get('ALLOW_FOR_SEARCH_TERMS').include?(type)
         raise NotProvideAssignType.new(type) if opts[type].nil?
         params = {term: opts[type]}
@@ -36,7 +36,7 @@ module PipeDrive
       end
 
       def find_by(type, opts, strict=false)
-        targets = search(type, opts, strict)
+        targets = search(type, opts)
         return if targets.blank?
         if strict
           targets.find do |target|
@@ -59,7 +59,7 @@ module PipeDrive
             items.each do |item|
               yield item
             end if block_given?
-            result[:additional_data][:pagination][:next_start]
+            result.dig(:additional_data, :pagination, :next_start)
           end
           break if next_start_from.nil?
           params[:start] = next_start_from
@@ -69,4 +69,5 @@ module PipeDrive
     end
 
   end
+
 end

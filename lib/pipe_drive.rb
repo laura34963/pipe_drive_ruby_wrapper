@@ -22,8 +22,8 @@ module PipeDrive
         const_get(class_name).custom_field_setup
       end
 
-      self.stage_ids_keys = Hash.new{|hash, key| hash[key] = {}}
-      Pipeline.setup_stage_ids
+      self.stage_id = Hash.new{|hash, key| hash[key] = {}}
+      Stage.setup_stage_ids
 
       self
     end
@@ -47,6 +47,7 @@ require 'pipe_drive/organization'
 require 'pipe_drive/person'
 require 'pipe_drive/deal'
 require 'pipe_drive/pipeline'
+require 'pipe_drive/stage'
 
 require 'pipe_drive/field_base'
 require 'pipe_drive/organization_field'
