@@ -28,15 +28,15 @@ module PipeDrive
     end
 
     def http_post(path, params={}, header={}, &block)
-      body_request(:post, path, params, header, block)
+      body_request(:post, path, params, header, &block)
     end
 
     def http_put(path, params={}, header={}, &block)
-      body_request(:put, path, params, header, block)
+      body_request(:put, path, params, header, &block)
     end
 
     def http_del(path, params={}, header={}, &block)
-      body_request(:delete, path, params, header, block)
+      body_request(:delete, path, params, header, &block)
     end
 
     protected
