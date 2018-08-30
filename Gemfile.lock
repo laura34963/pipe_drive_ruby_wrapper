@@ -1,4 +1,10 @@
+PATH
+  remote: .
+  specs:
+    pipe_drive (0.1.0)
+
 GEM
+  remote: https://rubygems.org/
   specs:
     activesupport (5.0.6)
       concurrent-ruby (~> 1.0, >= 1.0.2)
@@ -34,7 +40,8 @@ PLATFORMS
 DEPENDENCIES
   activesupport (~> 5.0)
   oj (~> 3.3.10)
+  pipe_drive!
   rspec (~> 3.7.0)
 
 BUNDLED WITH
-   1.16.3
+   1.16.4

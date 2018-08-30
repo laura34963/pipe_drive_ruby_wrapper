@@ -1,3 +1,7 @@
+source 'https://rubygems.org'
+
+gemspec
+
 # json parser
 gem 'oj', '~> 3.3.10'
 # active support
