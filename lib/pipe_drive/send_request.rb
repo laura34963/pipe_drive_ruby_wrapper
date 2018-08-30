@@ -8,8 +8,10 @@ module PipeDrive
 
     def http_get(path, params={}, header={}, &block)
       begin
-        uri = URI(host + path)
-        uri.query = URI.encode_www_form(params) if params.present?
+        full_url = "#{host}/#{API_VERSION}#{path}?api_token=#{PipeDrive.api_token}"
+        uri = URI(full_url)
+        params.merge!(api_token: PipeDrive.api_token)
+        uri.query = URI.encode_www_form(params)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = uri.scheme == 'https'
 
@@ -41,13 +43,15 @@ module PipeDrive
 
     def body_request(method, path, params={}, header={}, &block)
       begin
-        uri = URI(host + path)
+        full_url = "#{host}/#{API_VERSION}#{path}?api_token=#{PipeDrive.api_token}"
+        uri = URI(full_url)
+        params.merge!(api_token: PipeDrive.api_token)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = uri.scheme == 'https'
         header['Content-Type'] = 'application/json'
 
         request = Net::HTTP.const_get(method.to_s.classify).new(uri.request_uri, header)
-        request.body = params.to_json if params.present?
+        request.body = params.to_json
         response = http.request(request)
         result = handle_response(response)
       rescue Exception => e
