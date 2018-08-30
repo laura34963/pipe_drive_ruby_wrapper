@@ -2,8 +2,8 @@ module PipeDrive
   class SendRequest
     attr_reader :host
 
-    def initialize(host)
-      @host = host
+    def initialize
+      @host = PipeDrive.host
     end
 
     def http_get(path, params={}, header={}, &block)

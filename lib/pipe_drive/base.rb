@@ -14,7 +14,7 @@ module PipeDrive
 
     def update(opts)
       path = "/#{self.class.resource_name}s/#{id}"
-      opts.transform_keys!{|key| custom_field_keys[key] || key}
+      opts.transform_keys!{|key| field_keys[key] || key}
       requester.http_put(path, opts) do |result|
         new(result)
       end
@@ -38,7 +38,7 @@ module PipeDrive
       end
 
       def create(opts)
-        opts.transform_keys!{|key| custom_field_keys[key] || key}
+        opts.transform_keys!{|key| field_keys[key] || key}
         requester.http_post("/#{resource_name}s", opts) do |result|
           new(result)
         end

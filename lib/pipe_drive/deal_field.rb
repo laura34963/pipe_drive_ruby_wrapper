@@ -1,7 +1,7 @@
 module PipeDrive
   class DealField < FieldBase
 
-    class << self do
+    class << self
       def resource_name
         'dealField'
       end

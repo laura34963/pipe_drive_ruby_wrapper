@@ -1,7 +1,7 @@
 module PipeDrive
   class PersonField < FieldBase
 
-    class << self do
+    class << self
       def resource_name
         'personField'
       end

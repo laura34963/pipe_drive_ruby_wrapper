@@ -1,11 +1,12 @@
 module PipeDrive
   class FieldBase < Base
-    def add_to_custom_field_keys
+    def add_to_field_keys
       resource = self.class.correspond_resource.to_sym
-      PipeDrive.custom_field_keys[resource][name.parameterize] = key
+      field_name = name.parameterize(separator: '_').to_sym
+      PipeDrive.field_keys[resource][field_name] = key
     end
 
-    class << self do
+    class << self
 
       def correspond_resource
         resource_name.sub('Field', '')
@@ -20,13 +21,14 @@ module PipeDrive
 
       def create(opts)
         new_field = super(opts)
-        new_field.add_to_custom_field_keys
+        new_field.add_to_field_keys
       end
 
       def custom_field_setup
         resource = correspond_resource.to_sym
         list.each do |field|
-          PipeDrive.custom_field_keys[resource][field.name.parameterize] = field.key
+          field_name = field.name.parameterize(separator: '_').to_sym
+          PipeDrive.field_keys[resource][field_name] = field.key
         end
       end
 

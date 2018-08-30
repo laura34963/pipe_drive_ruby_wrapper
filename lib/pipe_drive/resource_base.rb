@@ -7,14 +7,14 @@ module PipeDrive
       self.class.send(:pagination, path, params, &block)
     end
 
-    class << self do
+    class << self
 
       def resource_name
         name.split('::').last.downcase
       end
 
-      def custom_field_keys
-        PipeDrive.custom_field_keys[resource_name.to_sym]
+      def field_keys
+        PipeDrive.field_keys[resource_name.to_sym]
       end
 
       def list(start_from=0, per_page=DEFAULT_PER_PAGE, options={}, &block)

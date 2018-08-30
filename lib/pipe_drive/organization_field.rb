@@ -1,7 +1,7 @@
 module PipeDrive
   class OrganizationField < FieldBase
 
-    class << self do
+    class << self
       def resource_name
         'organizationField'
       end
