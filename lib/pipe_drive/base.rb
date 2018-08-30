@@ -45,15 +45,16 @@ module PipeDrive
       end
 
       def update(id, opts)
-        target = find_by_id(id)
-        raise TargetNotFound.new(self.class.name) if target.nil?
-        target.update(opts)
+        path = "/#{resource_name}s/#{id}"
+        opts.transform_keys!{|key| field_keys[key] || key}
+        requester.http_put(path, opts) do |result|
+          new(result)
+        end
       end
 
       def delete(id)
-        target = find_by_id(id)
-        raise TargetNotFound.new(self.class.name) if target.nil?
-        target.delete
+        path = "/#{resource_name}s/#{id}"
+        requester.http_del(path){|result| puts result}
       end
 
       def search_and_setup_by(type, opts, strict=false)
