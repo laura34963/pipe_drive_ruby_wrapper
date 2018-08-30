@@ -44,6 +44,18 @@ module PipeDrive
         end
       end
 
+      def update(id, opts)
+        target = find_by_id(id)
+        raise TargetNotFound.new(self.class.name) if target.nil?
+        target.update(opts)
+      end
+
+      def delete(id)
+        target = find_by_id(id)
+        raise TargetNotFound.new(self.class.name) if target.nil?
+        target.delete
+      end
+
       def search_and_setup_by(type, opts, strict=false)
         target = find_by(type, opts, strict)
         if target.present?

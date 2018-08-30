@@ -11,6 +11,12 @@ module PipeDrive
     end
   end
 
+  class TargetNotFound < StandardError
+    def initialize(target_type)
+      super("#{target_type} not found")
+    end
+  end
+
   class RequestError < StandardError
     def initialize(response)
       super(response.to_json)

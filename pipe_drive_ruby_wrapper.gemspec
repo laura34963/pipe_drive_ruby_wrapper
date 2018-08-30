@@ -1,12 +1,12 @@
 Gem::Specification.new do |s|
-  s.name        = 'pipe_drive'
+  s.name        = 'pipe_drive_ruby_wrapper'
   s.version     = '0.1.0'
   s.platform    = Gem::Platform::RUBY
-  s.summary     = 'PipeDrive API Ruby Wrapper'
+  s.summary     = 'Some PipeDrive API Ruby Wrapper'
   s.description = 'ruby wrapper of some pipe drive api'
   s.authors     = ['JiaRou Lee']
   s.email       = 'laura34963@kdanmobile.com'
-  s.homepage    = 'https://github.com/laura34963/pipe_drive'
+  s.homepage    = 'https://github.com/laura34963/pipe_drive_ruby_wrapper'
   s.license     = 'MIT'
 
   s.files            = `git ls-files -- lib/*`.split("\n")

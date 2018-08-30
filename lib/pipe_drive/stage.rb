@@ -16,7 +16,7 @@ module PipeDrive
         list.each do |stage|
           pipeline_name = stage.pipeline_name.parameterize(separator: '_').to_sym
           stage_name = stage.name.parameterize(separator: '_').to_sym
-          PipeDrive.stage_id[pipeline_name][stage_name] = stage.id
+          PipeDrive.stage_ids[pipeline_name][stage_name] = stage.id
         end
       end
 
