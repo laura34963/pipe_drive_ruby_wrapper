@@ -50,7 +50,7 @@ module PipeDrive
 
       def find_by(type, opts, strict=false)
         targets = search(type, opts)
-        return if targets.blank?
+        return if targets.nil? || targets.empty?
         if strict
           targets.find do |target|
             target.send(type) == opts[type]

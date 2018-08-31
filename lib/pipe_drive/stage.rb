@@ -7,8 +7,8 @@ module PipeDrive
 
       def setup_stage_ids
         list.each do |stage|
-          pipeline_name = stage.pipeline_name.parameterize(separator: '_').to_sym
-          stage_name = stage.name.parameterize(separator: '_').to_sym
+          pipeline_name = parameterize(stage.pipeline_name, '_').to_sym
+          stage_name = parameterize(stage.name, '_').to_sym
           PipeDrive.stage_ids[pipeline_name][stage_name] = stage.id
         end
       end
