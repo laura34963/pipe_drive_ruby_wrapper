@@ -19,7 +19,7 @@ gem 'pipe_drive_ruby_wrapper'
 
 ```ruby
 PipeDrive.setup do |config|
-	config.api_token = [Your API Token obtain from pipedrive website]
+  config.api_token = [Your API Token obtain from pipedrive website]
 end
 ```
 
@@ -48,7 +48,7 @@ PipeDrive::Person.find_by_id(1)
 	* strict (only the same can be found) 
 
 	```ruby
-	PipeDrive::Person.find_by(:name, {name: 'Test'}, 	PipeDrive::STRICT)
+	PipeDrive::Person.find_by(:name, {name: 'Test'}, PipeDrive::STRICT)
 	```
 
 	* not strict (can be found if similar)

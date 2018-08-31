@@ -50,6 +50,8 @@ require 'pipe_drive/resource_base'
 require 'pipe_drive/organization'
 require 'pipe_drive/person'
 require 'pipe_drive/deal'
+
+require 'pipe_drive/overall_source_base'
 require 'pipe_drive/pipeline'
 require 'pipe_drive/stage'
 
