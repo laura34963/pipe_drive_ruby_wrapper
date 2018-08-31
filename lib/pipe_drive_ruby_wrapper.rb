@@ -11,25 +11,27 @@ module PipeDrive
   RESOURCE_CLASSES = %w[Organization Person Deal]
   FIELD_CLASSES = %w[OrganizationField PersonField DealField]
 
-  class << self; attr_accessor :api_token, :field_keys, :stage_ids; end
+  class << self; attr_accessor :api_token; end
+  class << self; attr_writer :field_keys, :stage_ids; end
 
   class << self
     def setup
       yield self
-
-      if field_keys.nil?
-        self.field_keys = Hash.new{|hash, key| hash[key] = {}}
-        FIELD_CLASSES.each do |class_name|
-          const_get(class_name).custom_field_setup
-        end
-      end
-
-      if stage_ids.nil?
-        self.stage_ids = Hash.new{|hash, key| hash[key] = {}}
-        Stage.setup_stage_ids
-      end
-
       self
+    end
+
+    def field_keys
+      return @field_keys unless @field_keys.nil? || @field_keys.empty?
+      @field_keys = {}
+      FIELD_CLASSES.each do |class_name|
+        @field_keys.merge!(const_get(class_name).field_keys_map)
+      end
+      @field_keys
+    end
+
+    def stage_ids
+      return @stage_ids unless @stage_ids.nil? || @stage_ids.empty?
+      @stage_ids = Stage.stage_ids_map
     end
 
     def host

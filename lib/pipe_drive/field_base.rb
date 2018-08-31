@@ -28,12 +28,14 @@ module PipeDrive
         new_field.add_to_field_keys
       end
 
-      def custom_field_setup
+      def field_keys_map
+        field_keys_map = Hash.new{|hash, key| hash[key] = {}}
         resource = correspond_resource.to_sym
         list.each do |field|
           field_name = parameterize(field.name, '_').to_sym
-          PipeDrive.field_keys[resource][field_name] = field.key
+          field_keys_map[resource][field_name] = field.key
         end
+        field_keys_map
       end
 
       def cache_keys
@@ -44,7 +46,7 @@ module PipeDrive
         cache_field_name = parameterize(field_name, '_').to_sym
         pipedrive_key = cache_keys[cache_field_name]
         return pipedrive_key unless pipedrive_key.nil?
-        custom_field_setup
+        PipeDrive.field_keys = nil
         pipedrive_key = cache_keys[cache_field_name]
         if pipedrive_key.nil?
           raise TargetNotFound.new(self.name, :name, field_name)

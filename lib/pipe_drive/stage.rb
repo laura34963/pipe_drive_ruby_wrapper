@@ -5,12 +5,14 @@ module PipeDrive
 
     class << self
 
-      def setup_stage_ids
+      def stage_ids_map
+        stage_ids_map = Hash.new {|hash, key| hash[key] = {}}
         list.each do |stage|
           pipeline_name = parameterize(stage.pipeline_name, '_').to_sym
           stage_name = parameterize(stage.name, '_').to_sym
-          PipeDrive.stage_ids[pipeline_name][stage_name] = stage.id
+          stage_ids_map[pipeline_name][stage_name] = stage.id
         end
+        stage_ids_map
       end
 
     end
