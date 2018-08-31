@@ -36,17 +36,21 @@ module PipeDrive
         end
       end
 
+      def cache_keys
+        PipeDrive.field_keys[correspond_resource.to_sym]
+      end
+
       def pipedrive_key_of(field_name)
-        cache_keys = PipeDrive.field_keys[correspond_resource.to_sym]
         cache_field_name = field_name.parameterize(separator: '_').to_sym
         pipedrive_key = cache_keys[cache_field_name]
         return pipedrive_key if pipedrive_key.present?
-        list do |field|
-          next unless field.name == field_name
-          pipedrive_key = field.key
-          break
+        custom_field_setup
+        pipedrive_key = cache_keys[cache_field_name]
+        if pipedrive_key.present?
+          pipedrive_key
+        else
+          raise TargetNotFound.new(self.name, :name, field_name)
         end
-        pipedrive_key
       end
 
     end
