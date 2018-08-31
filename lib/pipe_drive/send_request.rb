@@ -3,14 +3,16 @@ module PipeDrive
     attr_reader :host
 
     def initialize
+      raise MissingApiToken.new if PipeDrive.api_token.nil?
       @host = PipeDrive.host
+      @api_token = PipeDrive.api_token
     end
 
     def http_get(path, params={}, header={}, &block)
       begin
-        full_url = "#{host}/#{API_VERSION}#{path}?api_token=#{PipeDrive.api_token}"
+        full_url = "#{host}/#{API_VERSION}#{path}"
         uri = URI(full_url)
-        params.merge!(api_token: PipeDrive.api_token)
+        params.merge!(api_token: @api_token)
         uri.query = URI.encode_www_form(params)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = uri.scheme == 'https'
@@ -43,9 +45,8 @@ module PipeDrive
 
     def body_request(method, path, params={}, header={}, &block)
       begin
-        full_url = "#{host}/#{API_VERSION}#{path}?api_token=#{PipeDrive.api_token}"
+        full_url = "#{host}/#{API_VERSION}#{path}?api_token=#{@api_token}"
         uri = URI(full_url)
-        params.merge!(api_token: PipeDrive.api_token)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = uri.scheme == 'https'
         header['Content-Type'] = 'application/json'

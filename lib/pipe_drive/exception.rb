@@ -1,4 +1,15 @@
 module PipeDrive
+  class MissingApiToken < StandardError
+    def initialize
+      err_msg = "api token not found, please setup with
+      PipeDrive.setup do |config|
+        config.api_token = [Your API Token]
+      end
+      "
+      super(err_msg)
+    end
+  end
+
   class NotAllowSearchType < StandardError
     def initialize(type=nil)
       super("#{type} not allow search type")
@@ -12,8 +23,8 @@ module PipeDrive
   end
 
   class TargetNotFound < StandardError
-    def initialize(target_type)
-      super("#{target_type} not found")
+    def initialize(class_name, search_type, search_value)
+      super("#{class_name}: search #{search_type} for #{search_value} not found")
     end
   end
 
