@@ -2,8 +2,8 @@ module PipeDrive
   class Base < OpenStruct
 
     def initialize(attrs)
-      struct_attrs = attrs[:data] || attrs.except(:additional_data)
-      struct_attrs.merge!(attrs[:additional_data]) if attrs[:additional_data].present?
+      struct_attrs = attrs[:data] || PipeDrive.hash_except(attrs, [:additional_data])
+      struct_attrs.merge!(attrs[:additional_data]) unless attrs[:additional_data].nil?
 
       super(struct_attrs)
     end
@@ -23,6 +23,10 @@ module PipeDrive
     def delete
       path = "/#{self.class.resource_name}s/#{id}"
       requester.http_del(path)
+    end
+
+    def parameterize(target_string, separator)
+      self.class.parameterize(target_string, separator)
     end
 
     class << self
@@ -59,29 +63,32 @@ module PipeDrive
 
       def search_and_setup_by(type, opts, strict=false)
         target = find_by(type, opts, strict)
-        if target.present?
-          target.update(opts)
-        else
+        if target.nil?
           create(opts)
+        else
+          target.update(opts)
         end
+      end
+
+      def parameterize(target_string, separator)
+        target_string.gsub!(/[\-_\ ]+/, separator)
+        target_string.downcase
       end
 
       protected
 
       def list_objects(attrs)
-        return [] if attrs.blank?
-        if attrs[:data].present?
-          if attrs[:additional_data].present?
-            struct_attrs = attrs[:data].map do |data|
-              data.merge(attrs[:additional_data])
-            end
-          else
-            struct_attrs = attrs[:data].map do |data|
-              data
-            end
+        return [] if attrs.nil? || attrs.empty?
+        if attrs[:data].nil?
+          struct_attrs = attrs
+        elsif attrs[:additional_data].nil?
+          struct_attrs = attrs[:data].map do |data|
+            data
           end
         else
-          struct_attrs = attrs
+          struct_attrs = attrs[:data].map do |data|
+            data.merge(attrs[:additional_data])
+          end
         end
 
         struct_attrs.map do |struct_attr|

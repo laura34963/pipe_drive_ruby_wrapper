@@ -1,7 +1,7 @@
 require 'net/http'
-require 'active_support/all'
 require 'ostruct'
 require 'oj'
+require 'json'
 
 module PipeDrive
   API_VERSION = 'v1'
@@ -17,14 +17,14 @@ module PipeDrive
     def setup
       yield self
 
-      if field_keys.blank?
+      if field_keys.nil?
         self.field_keys = Hash.new{|hash, key| hash[key] = {}}
         FIELD_CLASSES.each do |class_name|
           const_get(class_name).custom_field_setup
         end
       end
 
-      if stage_ids.blank?
+      if stage_ids.nil?
         self.stage_ids = Hash.new{|hash, key| hash[key] = {}}
         Stage.setup_stage_ids
       end
@@ -39,7 +39,14 @@ module PipeDrive
     def requester
       SendRequest.new
     end
+
+    def hash_except(hash, except_keys)
+      all_keys = hash.keys
+      remain_keys = all_keys - except_keys
+      hash.slice(*remain_keys)
+    end
   end
+
 end
 
 require 'pipe_drive/base'

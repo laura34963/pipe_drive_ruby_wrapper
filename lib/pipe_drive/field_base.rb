@@ -2,7 +2,7 @@ module PipeDrive
   class FieldBase < Base
     def add_to_field_keys
       resource = self.class.correspond_resource.to_sym
-      field_name = name.parameterize(separator: '_').to_sym
+      field_name = parameterize(name, '_').to_sym
       PipeDrive.field_keys[resource][field_name] = key
     end
 
@@ -31,7 +31,7 @@ module PipeDrive
       def custom_field_setup
         resource = correspond_resource.to_sym
         list.each do |field|
-          field_name = field.name.parameterize(separator: '_').to_sym
+          field_name = parameterize(field.name, '_').to_sym
           PipeDrive.field_keys[resource][field_name] = field.key
         end
       end
@@ -41,15 +41,15 @@ module PipeDrive
       end
 
       def pipedrive_key_of(field_name)
-        cache_field_name = field_name.parameterize(separator: '_').to_sym
+        cache_field_name = parameterize(field_name, '_').to_sym
         pipedrive_key = cache_keys[cache_field_name]
-        return pipedrive_key if pipedrive_key.present?
+        return pipedrive_key unless pipedrive_key.nil?
         custom_field_setup
         pipedrive_key = cache_keys[cache_field_name]
-        if pipedrive_key.present?
-          pipedrive_key
-        else
+        if pipedrive_key.nil?
           raise TargetNotFound.new(self.name, :name, field_name)
+        else
+          pipedrive_key
         end
       end
 
