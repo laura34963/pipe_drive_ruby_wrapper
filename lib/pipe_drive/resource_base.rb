@@ -17,11 +17,24 @@ module PipeDrive
         PipeDrive.field_keys[resource_name.to_sym]
       end
 
-      def list(start_from=0, per_page=DEFAULT_PER_PAGE, options={}, &block)
+      def list(options={}, &block)
+        path = "/#{resource_name}s"
+        params = {start_from: 0, limit: DEFAULT_PER_PAGE}
+        params.merge!(options)
+        pagination(path, params, &block)
+      end
+
+      def pagination_list(start_from=0, per_page=DEFAULT_PER_PAGE, options={}, &block)
         path = "/#{resource_name}s"
         params = {start: start_from, limit: per_page}
         params.merge!(options)
-        pagination(path, params, &block)
+        resources = requester.http_get(path, params) do |result|
+          result[:data].nil? ? nil : list_objects(result)
+        end
+        resources.each do |resource|
+          yield resource
+        end if block_given?
+        resources
       end
 
       def search(type, opts)
