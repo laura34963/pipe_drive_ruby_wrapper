@@ -10,16 +10,19 @@ RSpec.configure do |config|
 end
 
 PipeDrive.setup do |config|
-  config.api_token = '1f320321b1eb07ed37ae120600c28207fc3b284f'
+  config.api_token = 'api_token'
   config.field_keys = {
     organization: {
-      region: 'rguwjiownuibnejaoijfon'
+      region: 'region key'
     },
     person: {
-      role: 'sljgiashigowiojeasdgh'
+      role: 'role key'
     },
     deal: {
-      product: 'aksjghisauhgkjsdkgnjk'
+      product: 'product key'
     }
+  }
+  config.stage_ids = {
+    1 => {test: 1}
   }
 end

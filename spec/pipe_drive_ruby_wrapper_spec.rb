@@ -1,4 +1,22 @@
-RSpec.describe PipeDrive::Person do
+RSpec.describe PipeDrive do
+  context '.setup' do
+    it 'should setup basic info for pipedrive' do
+      PipeDrive.setup do |config|
+        config.api_token = 'api token'
+        config.field_keys = {
+          person: {test: 'test_key'}
+        }
+        config.stage_ids = {
+          1 => {
+            test: 1
+          }
+        }
+      end
+      expect(PipeDrive.api_token).to eq('api token')
+      expect(PipeDrive.field_keys).to eq({person: {test: 'test_key'}})
+      expect(PipeDrive.stage_ids).to eq({1 => {test: 1}})
+    end
+  end
 
   context '.host' do
     it 'should return host with setup organization name' do
