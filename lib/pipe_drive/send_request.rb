@@ -85,19 +85,19 @@ module PipeDrive
     end
 
     def deep_symbolize_keys(data)
-      new_data = {}
-      data.each_pair do |key, value|
-        if value.is_a?(Hash)
+      if data.is_a?(Hash)
+        new_data = {}
+        data.each_pair do |key, value|
           new_data[key.to_sym] = deep_symbolize_keys(value)
-        elsif value.is_a?(Array)
-          new_data[key.to_sym] = value.map do |v|
-            deep_symbolize_keys(v)
-          end
-        else
-          new_data[key.to_sym] = value
         end
+        new_data
+      elsif data.is_a?(Array)
+        data.map do |v|
+          deep_symbolize_keys(v)
+        end
+      else
+        data
       end
-      new_data
     end
   end
 end
