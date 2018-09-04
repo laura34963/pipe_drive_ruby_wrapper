@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'pipe_drive_ruby_wrapper'
-  s.version     = '0.1.1'
+  s.version     = '0.1.2'
   s.platform    = Gem::Platform::RUBY
   s.summary     = 'Some PipeDrive API Ruby Wrapper'
   s.description = 'ruby wrapper of some pipe drive api'
@@ -17,6 +17,4 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3.1'
   s.add_development_dependency 'rspec', ['~> 3.0']
-
-  s.add_dependency('oj', '~> 3.3')
 end

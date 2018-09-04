@@ -68,7 +68,7 @@ module PipeDrive
       result = {status: response.code.to_i}
 
       begin
-        body = Oj.load(response.body)
+        body = JSON.parse(response.body)
       rescue
         body = {body: response.body}
       end

@@ -46,7 +46,7 @@ module PipeDrive
         cache_field_name = parameterize(field_name, '_').to_sym
         pipedrive_key = cache_keys[cache_field_name]
         return pipedrive_key unless pipedrive_key.nil?
-        PipeDrive.field_keys = nil
+        PipeDrive.reset_field_keys!
         pipedrive_key = cache_keys[cache_field_name]
         if pipedrive_key.nil?
           raise TargetNotFound.new(self.name, :name, field_name)

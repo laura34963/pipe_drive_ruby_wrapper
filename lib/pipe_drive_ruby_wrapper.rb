@@ -1,6 +1,5 @@
 require 'net/http'
 require 'ostruct'
-require 'oj'
 require 'json'
 
 module PipeDrive
@@ -29,8 +28,20 @@ module PipeDrive
       @field_keys
     end
 
+    def reset_field_keys!
+      @field_keys = {}
+      FIELD_CLASSES.each do |class_name|
+        @field_keys.merge!(const_get(class_name).field_keys_map)
+      end
+      @field_keys
+    end
+
     def stage_ids
       return @stage_ids unless @stage_ids.nil? || @stage_ids.empty?
+      @stage_ids = Stage.stage_ids_map
+    end
+
+    def reset_stage_ids!
       @stage_ids = Stage.stage_ids_map
     end
 

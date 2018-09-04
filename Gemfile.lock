@@ -1,15 +1,12 @@
 PATH
   remote: .
   specs:
-    pipe_drive_ruby_wrapper (0.1.0)
-      oj (~> 3.3)
-      rspec (~> 3.7)
+    pipe_drive_ruby_wrapper (0.1.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.3)
-    oj (3.3.10)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -28,7 +25,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  oj (~> 3.3.10)
   pipe_drive_ruby_wrapper!
   rspec (~> 3.7.0)
 
