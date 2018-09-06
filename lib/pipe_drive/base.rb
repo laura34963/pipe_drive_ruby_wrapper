@@ -58,7 +58,13 @@ module PipeDrive
 
       def delete(id)
         path = "/#{resource_name}s/#{id}"
-        requester.http_del(path){|result| puts result}
+        requester.http_del(path){|result| result}
+      end
+
+      def bulk_delete(ids)
+        path = "/#{resource_name}s"
+        params = {ids: ids.map(&:to_s).join(',')}
+        requester.http_del(path, params){|result| result}
       end
 
       def search_and_setup_by(type, opts, strict=false)

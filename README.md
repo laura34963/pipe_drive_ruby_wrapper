@@ -74,3 +74,9 @@ PipeDrive::Person.update(1, {name: 'new name'})
 ```ruby
 PipeDrive::Person.delete(1)
 ```
+
+* delete bulk resources one time
+
+```ruby
+PipeDrive::Person.bulk_delete([1, 2])
+```

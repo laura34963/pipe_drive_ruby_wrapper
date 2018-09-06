@@ -69,6 +69,7 @@ module PipeDrive
 
       begin
         body = JSON.parse(response.body)
+        body = {body: body} unless body.is_a?(Hash)
       rescue
         body = {body: response.body}
       end
