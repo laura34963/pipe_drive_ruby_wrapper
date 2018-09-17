@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'pipe_drive_ruby_wrapper'
-  s.version     = '0.1.9'
+  s.version     = '0.2.0'
   s.platform    = Gem::Platform::RUBY
   s.summary     = 'Some PipeDrive API Ruby Wrapper'
   s.description = 'ruby wrapper of some pipe drive api'
