@@ -17,6 +17,10 @@ module PipeDrive
         PipeDrive.field_keys[resource_name.to_sym]
       end
 
+      def field_class
+        Object.const_get("#{name}Field")
+      end
+
       def list(options={}, &block)
         path = "/#{resource_name}s"
         params = {start_from: 0, limit: DEFAULT_PER_PAGE}

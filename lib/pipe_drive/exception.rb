@@ -33,4 +33,10 @@ module PipeDrive
       super(response.to_json)
     end
   end
+
+  class FieldNotExist < StandardError
+    def initialize(field_name)
+      super("#{field_name} not existed field name")
+    end
+  end
 end

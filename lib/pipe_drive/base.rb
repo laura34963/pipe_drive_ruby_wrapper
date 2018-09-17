@@ -14,7 +14,7 @@ module PipeDrive
 
     def update(opts)
       path = "/#{self.class.resource_name}s/#{id}"
-      opts.transform_keys!{|key| self.class.field_keys[key].present? ? self.class.field_keys[key][:key] : key}
+      opts = self.class.send(:transform_opts, opts)
       requester.http_put(path, opts) do |result|
         self.class.new(result)
       end
@@ -42,7 +42,7 @@ module PipeDrive
       end
 
       def create(opts)
-        opts.transform_keys!{|key| field_keys[key].present? ? field_keys[key][:key] : key}
+        opts = transform_opts(opts)
         requester.http_post("/#{resource_name}s", opts) do |result|
           new(result)
         end
@@ -50,7 +50,7 @@ module PipeDrive
 
       def update(id, opts)
         path = "/#{resource_name}s/#{id}"
-        opts.transform_keys!{|key| field_keys[key].present? ? field_keys[key][:key] : key}
+        opts = transform_opts(opts)
         requester.http_put(path, opts) do |result|
           new(result)
         end
@@ -100,6 +100,26 @@ module PipeDrive
         struct_attrs.map do |struct_attr|
           new(struct_attr)
         end
+      end
+
+      def transform_opts(opts)
+        new_opts = {}
+        opts.each_pair do |key, value|
+          raise FieldNotExist.new(key) if field_keys[key].nil?
+          new_key = field_keys[key][:key]
+          if value.is_a?(Array)
+            field_info = field_class.find_by_id(field_keys[key][:id])
+            new_value = value.map do |val|
+              target = field_info.options.find{|f| f[:label] == val}
+              target[:id] unless target.nil?
+            end
+            new_value.compact!
+          else
+            new_value = value
+          end
+          new_opts[new_key] = new_value
+        end
+        new_opts
       end
       
     end
