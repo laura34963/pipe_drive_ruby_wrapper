@@ -7,14 +7,14 @@ module PipeDrive
       path = "/persons/#{id}/activities"
       params = {start: start_from, limit: per_page}
       params.merge!(options)
-      pagination(path, params, &block)
+      Activity.send(:pagination, path, params, &block)
     end
 
     def deals(start_from=0, per_page=DEFAULT_PER_PAGE, options={}, &block)
       path = "/persons/#{id}/deals"
       params = {start: start_from, limit: per_page}
       params.merge!(options)
-      pagination(path, params, &block)
+      Deal.send(:pagination, path, params, &block)
     end
   end
 end
