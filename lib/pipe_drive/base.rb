@@ -77,7 +77,7 @@ module PipeDrive
       end
 
       def parameterize(target_string, separator)
-        target_string.gsub!(/[\-_\ ]+/, separator)
+        target_string.gsub!(/[\-_\ \/]+/, separator)
         target_string.downcase
       end
 
