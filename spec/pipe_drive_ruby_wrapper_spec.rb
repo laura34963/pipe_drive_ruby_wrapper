@@ -4,7 +4,7 @@ RSpec.describe PipeDrive do
       PipeDrive.setup do |config|
         config.api_token = 'api token'
         config.field_keys = {
-          person: {test: 'test_key'}
+          person: {test: {id: 1, key: 'test_key'}}
         }
         config.stage_ids = {
           1 => {
@@ -13,7 +13,7 @@ RSpec.describe PipeDrive do
         }
       end
       expect(PipeDrive.api_token).to eq('api token')
-      expect(PipeDrive.field_keys).to eq({person: {test: 'test_key'}})
+      expect(PipeDrive.field_keys).to eq({person: {test: {id: 1, key: 'test_key'}}})
       expect(PipeDrive.stage_ids).to eq({1 => {test: 1}})
     end
   end

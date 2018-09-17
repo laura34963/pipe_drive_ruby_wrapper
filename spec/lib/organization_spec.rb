@@ -8,7 +8,7 @@ RSpec.describe PipeDrive::Organization do
 
   context '.field_keys' do
     it 'should obtain person custom field' do
-      org_custom_fields = {region: 'region key'}
+      org_custom_fields = {region: {id: 1, key: 'region key'}}
       expect(PipeDrive::Organization.field_keys).to eq(org_custom_fields)
     end
   end

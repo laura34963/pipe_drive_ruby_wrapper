@@ -3,7 +3,7 @@ module PipeDrive
     def add_to_field_keys
       resource = self.class.correspond_resource.to_sym
       field_name = parameterize(name, '_').to_sym
-      PipeDrive.field_keys[resource][field_name] = key
+      PipeDrive.field_keys[resource][field_name] = {id: id, key: key}
     end
 
     class << self
@@ -33,7 +33,7 @@ module PipeDrive
         resource = correspond_resource.to_sym
         list.each do |field|
           field_name = parameterize(field.name, '_').to_sym
-          field_keys_map[resource][field_name] = field.key
+          field_keys_map[resource][field_name] = {id: field.id, key: field.key}
         end
         field_keys_map
       end
@@ -43,15 +43,15 @@ module PipeDrive
       end
 
       def pipedrive_key_of(field_name)
-        cache_field_name = parameterize(field_name, '_').to_sym
+        cache_field_name = field_name.is_a?(String) ? parameterize(field_name, '_').to_sym : field_name
         pipedrive_key = cache_keys[cache_field_name]
-        return pipedrive_key unless pipedrive_key.nil?
+        return pipedrive_key[:key] unless pipedrive_key.nil?
         PipeDrive.reset_field_keys!
         pipedrive_key = cache_keys[cache_field_name]
         if pipedrive_key.nil?
           raise TargetNotFound.new(self.name, :name, field_name)
         else
-          pipedrive_key
+          pipedrive_key[:key]
         end
       end
 

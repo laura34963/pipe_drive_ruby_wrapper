@@ -8,7 +8,7 @@ RSpec.describe PipeDrive::Deal do
 
   context '.field_keys' do
     it 'should obtain person custom field' do
-      deal_custom_fields = {product: 'product key'}
+      deal_custom_fields = {product: {id: 3, key: 'product key'}}
       expect(PipeDrive::Deal.field_keys).to eq(deal_custom_fields)
     end
   end

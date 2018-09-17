@@ -14,7 +14,7 @@ module PipeDrive
 
     def update(opts)
       path = "/#{self.class.resource_name}s/#{id}"
-      opts.transform_keys!{|key| self.class.field_keys[key] || key}
+      opts.transform_keys!{|key| self.class.field_keys[key].present? ? self.class.field_keys[key][:key] : key}
       requester.http_put(path, opts) do |result|
         self.class.new(result)
       end
@@ -42,7 +42,7 @@ module PipeDrive
       end
 
       def create(opts)
-        opts.transform_keys!{|key| field_keys[key] || key}
+        opts.transform_keys!{|key| field_keys[key].present? ? field_keys[key][:key] : key}
         requester.http_post("/#{resource_name}s", opts) do |result|
           new(result)
         end
@@ -50,7 +50,7 @@ module PipeDrive
 
       def update(id, opts)
         path = "/#{resource_name}s/#{id}"
-        opts.transform_keys!{|key| field_keys[key] || key}
+        opts.transform_keys!{|key| field_keys[key].present? ? field_keys[key][:key] : key}
         requester.http_put(path, opts) do |result|
           new(result)
         end
@@ -77,7 +77,7 @@ module PipeDrive
       end
 
       def parameterize(target_string, separator)
-        target_string.gsub!(/[\-_\ \/]+/, separator)
+        target_string.gsub!(/[\W_]+/, separator)
         target_string.downcase
       end
 

@@ -13,13 +13,13 @@ PipeDrive.setup do |config|
   config.api_token = 'api_token'
   config.field_keys = {
     organization: {
-      region: 'region key'
+      region: {id: 1, key: 'region key'}
     },
     person: {
-      role: 'role key'
+      role: {id: 2, key: 'role key'}
     },
     deal: {
-      product: 'product key'
+      product: {id: 3, key: 'product key'}
     }
   }
   config.stage_ids = {

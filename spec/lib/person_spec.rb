@@ -8,7 +8,7 @@ RSpec.describe PipeDrive::Person do
 
   context '.field_keys' do
     it 'should obtain person custom field' do
-      person_custom_fields = {role: 'role key'}
+      person_custom_fields = {role: {id: 2, key: 'role key'}}
       expect(PipeDrive::Person.field_keys).to eq(person_custom_fields)
     end
   end
