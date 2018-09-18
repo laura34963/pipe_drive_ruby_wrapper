@@ -105,12 +105,12 @@ module PipeDrive
       def transform_opts(opts)
         new_opts = {}
         opts.each_pair do |key, value|
-          if field_keys[key].nil?
+          if resource_class.field_keys[key].nil?
             new_opts[key] = value
           else
-            new_key = field_keys[key][:key]
+            new_key = resource_class.field_keys[key][:key]
             if value.is_a?(Array)
-              field_info = field_class.find_by_id(field_keys[key][:id])
+              field_info = field_class.find_by_id(resource_class.field_keys[key][:id])
               new_value = value.map do |val|
                 target = field_info.options.find{|f| f[:label] == val}
                 target[:id] unless target.nil?

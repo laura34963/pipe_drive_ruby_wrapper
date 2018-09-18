@@ -8,6 +8,14 @@ module PipeDrive
 
     class << self
 
+      def resource_class
+        PipeDrive.const_get(correspond_resource.capitalize)
+      end
+
+      def field_class
+        self
+      end
+
       def correspond_resource
         resource_name.sub('Field', '')
       end

@@ -17,6 +17,10 @@ module PipeDrive
         PipeDrive.field_keys[resource_name.to_sym]
       end
 
+      def resource_class
+        self
+      end
+
       def field_class
         Object.const_get("#{name}Field")
       end
