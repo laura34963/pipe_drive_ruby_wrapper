@@ -109,13 +109,9 @@ module PipeDrive
             new_opts[key] = value
           else
             new_key = resource_class.field_keys[key][:key]
-            if value.is_a?(Array)
-              field_info = field_class.find_by_id(resource_class.field_keys[key][:id])
-              new_value = value.map do |val|
-                target = field_info.options.find{|f| f[:label] == val}
-                target[:id] unless target.nil?
-              end
-              new_value.compact!
+            field_info = field_class.find_by_id(resource_class.field_keys[key][:id])
+            if field_info.field_type == 'set' || field_info.field_type == 'enum'
+              new_value = detect_option_value(field_info, value)
             else
               new_value = value
             end
@@ -123,6 +119,21 @@ module PipeDrive
           end
         end
         new_opts
+      end
+
+      private
+
+      def detect_option_value(field_info, value)
+        if value.is_a?(Array)
+          new_value = value.map do |val|
+            target = field_info.options.find{|f| f[:label] == val}
+            target[:id] unless target.nil?
+          end
+          new_value.compact
+        else
+          target = field_info.options.find{|f| f[:label] == value}
+          target.nil? ? nil : target[:id]
+        end
       end
       
     end
