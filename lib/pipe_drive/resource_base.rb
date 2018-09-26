@@ -1,6 +1,19 @@
 module PipeDrive
   class ResourceBase < Base
 
+    def initialize(attrs)
+      data = attrs[:data] || PipeDrive.hash_except(attrs, [:additional_data])
+      processed_data = {}
+      data.each_pair do |key, value|
+        field_name_map = self.class.field_names[key.to_s]
+        field_name = field_name_map.nil? ? key : field_name_map[:name]
+        processed_data[field_name] = value
+      end
+      attrs[:data] = processed_data
+
+      super(attrs)
+    end
+
     protected
 
     def pagination(path, params, &block)
@@ -15,6 +28,10 @@ module PipeDrive
 
       def field_keys
         PipeDrive.field_keys[resource_name.to_sym]
+      end
+
+      def field_names
+        PipeDrive.field_names[resource_name.to_sym]
       end
 
       def resource_class

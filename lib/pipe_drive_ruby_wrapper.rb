@@ -11,7 +11,7 @@ module PipeDrive
   FIELD_CLASSES = %w[OrganizationField PersonField DealField]
 
   class << self; attr_accessor :api_token; end
-  class << self; attr_writer :field_keys, :stage_ids; end
+  class << self; attr_writer :field_keys, :field_names, :stage_ids; end
 
   class << self
     def setup
@@ -19,21 +19,21 @@ module PipeDrive
       self
     end
 
-    def field_keys
-      return @field_keys unless @field_keys.nil? || @field_keys.empty?
-      @field_keys = {}
-      FIELD_CLASSES.each do |class_name|
-        @field_keys.merge!(const_get(class_name).field_keys_map)
-      end
-      @field_keys
+    def field_infos
+      return @field_infos unless @field_infos.nil? || @field_infos.empty?
+      @field_infos = obtain_field_infos
     end
 
-    def reset_field_keys!
-      @field_keys = {}
-      FIELD_CLASSES.each do |class_name|
-        @field_keys.merge!(const_get(class_name).field_keys_map)
-      end
-      @field_keys
+    def reset_field_infos!
+      @field_infos = obtain_field_infos
+    end
+
+    def field_keys
+      @fields_keys = field_infos[:key_map]
+    end
+
+    def field_names
+      @field_names = field_infos[:name_map]
     end
 
     def stage_ids
@@ -57,6 +57,18 @@ module PipeDrive
       all_keys = hash.keys
       remain_keys = all_keys - except_keys
       hash.slice(*remain_keys)
+    end
+
+    private
+
+    def obtain_field_infos
+      field_infos = {key_map: {}, name_map: {}}
+      FIELD_CLASSES.each do |class_name|
+        infos = const_get(class_name).field_infos_map
+        field_infos[:key_map].merge!(infos[:key_map])
+        field_infos[:name_map].merge!(infos[:name_map])
+      end
+      field_infos
     end
   end
 
