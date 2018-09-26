@@ -2,14 +2,16 @@ module PipeDrive
   class ResourceBase < Base
 
     def initialize(attrs)
-      data = attrs[:data] || PipeDrive.hash_except(attrs, [:additional_data])
-      processed_data = {}
-      data.each_pair do |key, value|
-        field_name_map = self.class.field_names[key.to_s]
-        field_name = field_name_map.nil? ? key : field_name_map[:name]
-        processed_data[field_name] = value
+      unless self.class.field_names.nil?
+        data = attrs[:data] || PipeDrive.hash_except(attrs, [:additional_data])
+        processed_data = {}
+        data.each_pair do |key, value|
+          field_name_map = self.class.field_names[key.to_s]
+          field_name = field_name_map.nil? ? key : field_name_map[:name]
+          processed_data[field_name] = value
+        end 
+        attrs[:data] = processed_data
       end
-      attrs[:data] = processed_data
 
       super(attrs)
     end

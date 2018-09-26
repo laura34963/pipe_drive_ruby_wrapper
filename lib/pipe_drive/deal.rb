@@ -4,11 +4,11 @@ module PipeDrive
     ALLOW_FOR_ADDITION_SEARCH_OPTS = %i[org_id person_id]
 
     def organization
-      Organization.find_by_id(org_id)
+      Organization.find_by_id(organization)
     end
 
     def person
-      Person.find_by_id(person_id)
+      Person.find_by_id(contact_person)
     end
   end
 end
