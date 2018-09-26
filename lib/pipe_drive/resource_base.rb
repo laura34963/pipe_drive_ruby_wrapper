@@ -6,8 +6,13 @@ module PipeDrive
         data = attrs[:data] || PipeDrive.hash_except(attrs, [:additional_data])
         processed_data = {}
         data.each_pair do |key, value|
-          field_name_map = self.class.field_names[key.to_s]
-          field_name = field_name_map.nil? ? key : field_name_map[:name]
+          key = key.to_s
+          if key.end_with?('_id')
+            field_name = key
+          else
+            field_name_map = self.class.field_names[key]
+            field_name = field_name_map.nil? ? key : field_name_map[:name]
+          end
           processed_data[field_name] = value
         end 
         attrs[:data] = processed_data
