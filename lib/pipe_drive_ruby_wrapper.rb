@@ -11,7 +11,7 @@ module PipeDrive
   FIELD_CLASSES = %w[OrganizationField PersonField DealField]
 
   class << self; attr_accessor :api_token; end
-  class << self; attr_writer :field_keys, :field_names, :stage_ids; end
+  class << self; attr_writer :field_keys, :field_names, :stage_ids, :pipeline_ids; end
 
   class << self
     def setup
@@ -37,12 +37,19 @@ module PipeDrive
     end
 
     def stage_ids
-      return @stage_ids unless @stage_ids.nil? || @stage_ids.empty?
-      @stage_ids = Stage.stage_ids_map
+      @stage_ids ||= Stage.stage_ids_map
     end
 
     def reset_stage_ids!
       @stage_ids = Stage.stage_ids_map
+    end
+
+    def pipeline_ids
+      @pipeline_ids ||= Pipeline.pipeline_ids_map
+    end
+
+    def reset_pipeline_ids!
+      @pipeline_ids = Pipeline.pipeline_ids_map
     end
 
     def host
