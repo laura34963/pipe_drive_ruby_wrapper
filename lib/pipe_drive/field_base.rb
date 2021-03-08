@@ -42,6 +42,7 @@ module PipeDrive
         field_names_map = Hash.new{|hash, key| hash[key] = {}}
         resource = correspond_resource.to_sym
         list.each do |field|
+          next if field.id.nil?
           field_name = parameterize(field.name, '_')
           field_keys_map[resource][field_name.to_sym] = {id: field.id, key: field.key}
           field_names_map[resource][field.key] = {id: field.id, name: field_name}
